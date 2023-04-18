@@ -20,9 +20,21 @@ const USER_DATA = {
 
 refs.loginForm.addEventListener('submit', onLoginFormSubmit);
 
+populateForm();
+
 function onLoginFormSubmit(evt) {
   evt.preventDefault();
   const { email, password, button } = evt.target;
+
+  if (button.textContent === 'logout') {
+    refs.buttonSubmit.textContent = 'Login';
+    refs.emailInput.disabled = false;
+    refs.passwordInput.disabled = false;
+    evt.currentTarget.reset();
+    localStorage.removeItem('formData');
+    return;
+  }
+
   if (
     email.value !== USER_DATA.email ||
     password.value !== USER_DATA.password
@@ -39,10 +51,6 @@ function onLoginFormSubmit(evt) {
   button.textContent = 'logout';
   email.disabled = true;
   password.disabled = true;
-
-  if ((button.textContent = 'logout')) {
-    refs.loginForm.addEventListener('submit', onLogoutButtonSubmit);
-  }
 }
 
 function populateForm() {
@@ -54,16 +62,5 @@ function populateForm() {
   refs.passwordInput.disabled = true;
   refs.emailInput.value = saveData.email;
   refs.passwordInput.value = saveData.password;
-  // refs.buttonSubmit.textContent = 'logout';
-}
-
-populateForm();
-
-function onLogoutButtonSubmit(evt) {
-  evt.preventDefault();
-  refs.buttonSubmit.textContent = 'Login';
-  refs.emailInput.disabled = false;
-  refs.passwordInput.disabled = false;
-  evt.currentTarget.reset();
-  localStorage.removeItem('formData');
+  refs.buttonSubmit.textContent = 'logout';
 }
